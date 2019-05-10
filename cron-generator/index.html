@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="bootstrap.min.css" rel="stylesheet">
+	<link href="font/font-awesome.min.css" rel="stylesheet">
+	<link href="cronGen.css" rel="stylesheet">
+    <script src="jquery-2.1.4.min.js"></script>
+    <script src="later.min.js"></script>
+    <title></title>
+    <script type="text/javascript">
+	$(function() {
+	    $("#cron").cronGen({
+	    	direction : 'right'
+	    });
+	  
+	});
+</script>
+</head>
+    <body>
+	<div class="container">
+		<form role="form" class="form-inline" onsubmit="return false;">
+			<div class="form-group">
+				<label for="cron">Cron</label>
+				<input id="cron" class="form-control" onchange="test()" />
+				<button type=button id="startBtn">表达式解析</button>
+			</div>
+		</form>
+		<div id="timeContent">
+		</div>
+	</div>       
+
+        <script src="cronGen.min.js"></script>
+        <script src="bootstrap.min.js"></script>
+        <script type="text/javascript">
+        	$('#startBtn').click(function() {
+				run();
+        	});
+
+        	function run() {
+			    var link = $("#cron").val();
+			    if (link == '') {
+			        layer.msg("内容不能空.");
+			        return;
+			    }
+			    console.log(link);
+			    var sched = later.parse.cron(link);
+			    later.date.localTime();
+			    var results = later.schedule(sched).next(7);
+			    $("#timeContent").html("");
+			    for (var i = 0; i < results.length; i++) {
+			        $("#timeContent").append(results[i].toLocaleString() + "<hr/>");
+			    }
+			    //toolfk.report('crontab', link);
+			   	return false;
+			}
+        </script>
+    </body>
+</html>
